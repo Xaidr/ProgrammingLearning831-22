@@ -2,34 +2,70 @@
 //
 
 #include <iostream>
-#include <cstdlib>
 #include <string>
+#include <sstream>
 #include <map>
 #include <vector>
+#include "PairMapBase.h"
+#include "Rotor.h"
+#include "EnigmaMachine.h"
 
 using namespace std;
 
+vector<string> ParseRotorStr(string rotor)
+{
+    if (rotor.empty())
+        return vector<string>{};
+    if (!rotor.find('<'))
+        return vector<string>{rotor, ""};
+    return vector<string>{rotor.substr(0, 26), rotor.substr(27,29 + rotor.size() - 29)};
+}
+
 int main()
 {
-    map<int, string> Rotors;
-    Rotors[0] = "EKMFLGDQVZNTOWYHXUSPAIBRCJ<R";
-    Rotors[1] = "AJDKSIRUXBLHWTMCQGZNPYFVOE<F";
-    Rotors[2] = "BDFHJLCPRTXVZNYEIWGAKMUSQO<W";
-    Rotors[3] = "ESOVPZJAYQUIRHXLNFTGKDCMWB<K";
-    Rotors[4] = "VZBRGITYUPSDNHLXAWMJQOFECK<A";
-    Rotors[5] = "JPGVOUMFYQBENHZRDKASXLICTW<AN";
-    Rotors[6] = "NZJHGRCXMYSWBOUFAIVLPEKQDT<AN";
-    Rotors[7] = "FKQHTLXOCBJSPDZRAMEWNIUYGV<AN";
+    map<int, string> RotorsStr;
+    RotorsStr[0] = "EKMFLGDQVZNTOWYHXUSPAIBRCJ<R";
+    RotorsStr[1] = "AJDKSIRUXBLHWTMCQGZNPYFVOE<F";
+    RotorsStr[2] = "BDFHJLCPRTXVZNYEIWGAKMUSQO<W";
+    RotorsStr[3] = "ESOVPZJAYQUIRHXLNFTGKDCMWB<K";
+    RotorsStr[4] = "VZBRGITYUPSDNHLXAWMJQOFECK<A";
+    RotorsStr[5] = "JPGVOUMFYQBENHZRDKASXLICTW<AN";
+    RotorsStr[6] = "NZJHGRCXMYSWBOUFAIVLPEKQDT<AN";
+    RotorsStr[7] = "FKQHTLXOCBJSPDZRAMEWNIUYGV<AN";
 
-    map<int, string> Reflectors;
-    Reflectors[0] = "AY BR CU DH EQ FS GL IP JX KN MO TZ VW";
-    Reflectors[1] = "AF BV CP DJ EI GO HY KR LZ MX NW TQ SU";
-    Reflectors[2] = "AE BN CK DQ FU GY HW IJ LO MP RX SZ TV";
-    Reflectors[3] = "AR BD CO EJ FN GT HK IV LM PW QZ SX UY";
+    map<int, string> ReflectorsStr;
+    ReflectorsStr[0] = "AY BR CU DH EQ FS GL IP JX KN MO TZ VW";
+    ReflectorsStr[1] = "AF BV CP DJ EI GO HY KR LZ MX NW TQ SU";
+    ReflectorsStr[2] = "AE BN CK DQ FU GY HW IJ LO MP RX SZ TV";
+    ReflectorsStr[3] = "AR BD CO EJ FN GT HK IV LM PW QZ SX UY";
 
     string Letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-    std::cout << "Hello World!\n";
+    vector<Rotor> Rotors;
+    for (int i = 0; i < 4; i++)
+    {
+        if (i == 0)
+            continue;
+        string RotorWiring = ParseRotorStr(RotorsStr[i])[0];
+        string RotorSteps = ParseRotorStr(RotorsStr[i])[1];
+        Rotors.push_back(Rotor(RotorWiring, RotorSteps, 'A', 'A'));
+    }
+    Rotors.reserve(Rotors.size());
+    PairMapBase Reflector(ReflectorsStr[0], "Reflector");
+    PairMapBase Plugboard("", "Plugboard");
+    EnigmaBase enigma(Rotors, Reflector, Plugboard);
+    string input = "hello the wonderful world";
+    //string input = "GWKZO LQEHV";
+    //string input = "IBSFO FDDZT";
+    //cin >> input;
+    string result;
+    result = enigma.crypt(input);
+    cout << "\n" << result << "\n";
+    //test run
+    
+    
+
+    return EXIT_SUCCESS;
 }
 
 

@@ -128,11 +128,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Enigma.cpp" />
+    <ClCompile Include="EnigmaBase.cpp" />
+    <ClCompile Include="EnigmaMachine.cpp" />
     <ClCompile Include="PairMapBase.cpp" />
     <ClCompile Include="Rotor.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="EnigmaBase.h" />
+    <ClInclude Include="EnigmaMachine.h" />
     <ClInclude Include="PairMapBase.h" />
     <ClInclude Include="Rotor.h" />
     <ClInclude Include="Utils.h" />
